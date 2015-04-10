@@ -1,0 +1,206 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Linechart的demo</title>
+    <script src="//g.alicdn.com/kissy/k/1.4.8/seed-min.js" charset="utf-8"></script>
+</head>
+    <style>
+        ul {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+
+        .parentElem::-webkit-scrollbar, .childElem::-webkit-scrollbar {
+            width: 3px !important;
+        }
+
+        .childElem::-webkit-scrollbar-thumb, .parentElem::-webkit-scrollbar-thumb {
+            background: #AEACAC;
+        }
+
+        body > div {
+            overflow: auto;
+            text-align: center;
+            margin-bottom:100px;
+
+        }
+
+        .container {
+            display: inline-block;
+        }
+
+        .parentElem {
+            /*position: relative;*/
+            float: left;
+            width: 250px;
+            overflow-y: scroll;
+            overflow-x: hidden;
+            height: 400px;
+        }
+
+        .parentElem div {
+           /* position: absolute;
+            top: 50%;
+            margin-top: -25px;*/
+
+            width: 250px;
+            height: 50px;
+            line-height: 50px;
+            background: #fbd500;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        #canvas, #canvas_1 {
+            float: left;
+            margin-left: -3px;
+            /*border: 1px solid #ccc;*/
+        }
+
+        .childElem{
+            float: left;
+            width: 250px;
+            overflow-y: scroll;
+            overflow-x: hidden;
+            height: 400px;
+            /*border: 1px solid #ccc;*/
+        }
+
+        .childElem div {
+            width: 250px;
+            height: 50px;
+            line-height: 50px;
+            margin-bottom: 20px;
+            background: #fbd500;
+            text-align: center;
+        }
+
+
+        .parentElem div:last-child,
+
+        .childElem div:last-child {
+            margin-bottom: 0;
+        }
+    </style>
+<body>
+
+<h2>Linechart的demo</h2>
+    <div>
+        <div class="container"> <!-- 容器 -->
+            <div class="parentElem"> <!-- 父数据节点集 -->
+                <div data-childIds="a1,a2,a3,a4">a</div>
+                <div data-childIds="a2|0.3">b</div>
+                <div data-childIds="a3">c</div>
+                <div data-childIds="a4|0.2">d</div>
+                <div data-childIds="a5,a6,a7,a8">e</div>
+                <div data-childIds="a6">f</div>
+                <div data-childIds="a7">g</div>
+                <div data-childIds="a8">h</div>
+            </div>
+            <canvas id="canvas" width="300" height="400"></canvas> <!-- 画布区域 -->
+            <div class="childElem"> <!-- 子数据节点集 -->
+                <div data-id="a1">a1</div>
+                <div data-id="a2">a2</div>
+                <div data-id="a3">a3</div>
+                <div data-id="a4">a4</div>
+                <div data-id="a5">a5</div>
+                <div data-id="a6">a6</div>
+                <div data-id="a7">a7</div>
+                <div data-id="a8">a8</div>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <div class="container"> <!-- 容器 -->
+            <div class="parentElem"> <!-- 父数据节点集 -->
+                <div data-childIds="a4">a</div>
+                <div data-childIds="a1">b</div>
+                <div data-childIds="a3">c</div>
+                <div data-childIds="a2">d</div>
+                <div data-childIds="a5">e</div>
+                <div data-childIds="a6">f</div>
+                <div data-childIds="a5">g</div>
+                <div data-childIds="a8">h</div>
+            </div>
+            <canvas id="canvas_1" width="300" height="400"></canvas> <!-- 画布区域 -->
+            <div class="childElem"> <!-- 子数据节点集 -->
+                <div data-id="a1">a1</div>
+                <div data-id="a2">a2</div>
+                <div data-id="a3">a3</div>
+                <div data-id="a4">a4</div>
+                <div data-id="a5">a5</div>
+                <div data-id="a6">a6</div>
+                <div data-id="a7">a7</div>
+                <div data-id="a8">a8</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var S = KISSY;
+
+        if (S.Config.debug) {
+            var debugPath = "http://127.0.0.1:5555/";
+            S.config({
+                packages: [{
+                    name: "kg/linechart/1.0.0",
+                    path: debugPath,
+                    charset: "utf-8",
+                    ignorePackageNameInUri: true
+                }]
+            });
+        }
+
+        S.use('kg/linechart/1.0.0/index', function(S, LineChart) {
+            var lineChart = new LineChart();
+            var $ = S.all;
+
+            // curve
+            var options = {
+                canvas: "#canvas",
+                render: "curve",
+                scroll: {
+                    //preOption: null,
+                    startCallback: function() {
+                        console.log("preCallback");
+                    },
+                    endCallback: function () {
+                        console.log("endCallback");
+                    }
+                }
+            };
+
+            // straight
+            var options_1 = {
+                canvas: "#canvas_1",
+                render: "straight",
+                arrows: {
+                    size: 0.05,                     // 箭头长度
+                    sharp: 0.025,                   // 箭头夹角
+                    lineWidth: 2,                   // 箭头宽度
+                    color: "rgba(211, 84, 0, 0.5)"  // 箭头颜色
+                },
+                scroll: {
+                    //preOption: null,
+                    startCallback: function() {
+                        console.log("preCallback");
+                    },
+                    endCallback: function () {
+                        console.log("endCallback");
+                    }
+                }
+            };
+
+            lineChart.add(options);
+            lineChart.add(options_1);
+        
+        });
+
+    </script>
+
+</body>
+</html>
+

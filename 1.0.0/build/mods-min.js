@@ -1,0 +1,1 @@
+KISSY.config("requires",{"kg/linechart/1.0.0/index":["node","base"],"kg/linechart/1.0.0/lib/main":["node","base"]});
